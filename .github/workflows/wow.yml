@@ -14,9 +14,13 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           env | sort
+          set -x
+          docker login docker.pkg.github.com --username ${GITHUB_ACTOR} --password ${GITHUB_TOKEN}
           echo OLD DATE: $(cat wow.date)
           date | tee wow.date
-          set -x
+          TAG=docker.pkg.github.com/bschofield-va/action-test/wow:latest
+          docker build -t $TAG .
+          docker push $TAG
           git config --local user.email "bryan.schofield@libertyits.com"
           git config --local user.name "Bryan Schofield"
           git add .
