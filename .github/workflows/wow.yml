@@ -51,7 +51,7 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
           JOB_STATUS: ${{job.status}}
-          ACTION_URL: ${{format('https://github.com/{0}/{1}/commit/{2}/checks',github.context.repo.owner,github.context.repo.repo,github.context.sha)}}
+          ACTION_URL: ${{format('{0}/commit/{1}/checks',github.context.repository.html_url,github.context.sha)}}
         run: |
           cat > message.json <<EOF
           {
