@@ -9,7 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/cache@v1
+      - uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_CHANNEL: skantopus
+          SLACK_COLOR: '#3278BD'
+          SLACK_ICON: https://ca.slack-edge.com/T0BCXG7GT-U8W0DQ42X-e7c351bc56d2-512
+          SLACK_MESSAGE: 'Wow :party-shantopus:'
+          SLACK_TITLE: Wow
+          SLACK_USERNAME: 'Bryan Schofield'
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+     - uses: actions/cache@v1
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -39,5 +48,5 @@ jobs:
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
-
+ 
 
