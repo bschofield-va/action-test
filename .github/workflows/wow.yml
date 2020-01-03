@@ -40,7 +40,7 @@ jobs:
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
       - name: Slack Notification
-        uses: 8398a7/action-slack@v2
+        - uses: 8398a7/action-slack@v2
           with:
             status: ${{ job.status }}
             author_name: github
