@@ -34,13 +34,13 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
         with:
           args: |
-            '{
-              "channel":"shanktopus",
-              "text":"Hello world",
-              "icon_emoji":":knife:",
-              "as_user": false,
-              "username": "github"
-            }'
+            { \
+              "channel":"shanktopus", \
+              "text":"Hello world", \
+              "icon_emoji":":knife:", \
+              "as_user": false, \
+              "username": "github" \
+            }
       - name: Build
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
