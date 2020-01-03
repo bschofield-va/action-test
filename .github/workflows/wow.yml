@@ -15,6 +15,7 @@ jobs:
         run: |
           env | sort
           set -x
+          mvn deploy -s settings.xml
           docker login docker.pkg.github.com --username ${GITHUB_ACTOR} --password ${GITHUB_TOKEN}
           echo OLD DATE: $(cat wow.date)
           date | tee wow.date
@@ -28,4 +29,5 @@ jobs:
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
+          
 
