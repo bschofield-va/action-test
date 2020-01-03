@@ -11,11 +11,14 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build
         run: |
-          env
+          env | sort
           echo OLD DATE: $(cat wow.date)
           date | tee wow.date
           git config --local user.email "bryan.schofield@libertyits.com"
           git config --local user.name "Bryan Schofield"
-          echo git add .
-          echo git commit -m "wow"
+          git add .
+          git commit -m "wow"
+          BRANCH=master
+          REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
 
