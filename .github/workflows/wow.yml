@@ -25,7 +25,7 @@ jobs:
           sed -i "s|<version>.*|<version>1.0.$(date +%s)</version>|" pom.xml
           date | tee wow.date
           # Deploy Maven artifacts to GitHub Packages
-          mvn -B deploy -s settings.xml
+          mvn -B deploy -s settings.xml -Dmaven.wagon.http.pool=false
           # Push Docker images to GitHub Packages
           docker login docker.pkg.github.com --username ${GITHUB_ACTOR} --password ${GITHUB_TOKEN}
           TAG=docker.pkg.github.com/bschofield-va/action-test/wow:latest
