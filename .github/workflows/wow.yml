@@ -39,19 +39,6 @@ jobs:
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           ### git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
-      - name: Notify Slack
-        env:
-          SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
-          JOB_STATUS: ${{job.status}}
-        run: |
-          cat > message.json <<EOF
-          {
-            "pretext": "$GITHUB_REPOSITORY",
-            "text": "$JOB_STATUS - Wow _wow_ *wow* :party-shanktopus:",
-            "color":"#FA4",
-          }
-          EOF
-          curl -d@message.json $SLACK_WEBHOOK
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -60,3 +47,17 @@ jobs:
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
         run: echo "$JOB_CONTEXT"
+      - name: Notify Slack
+        env:
+          SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
+          JOB_STATUS: ${{job.status}}
+          ACTION_URL: ${{format('https://github.com/{0}/{1}/commit/{2}/checks',github.context.repo.owner,github.context.repo.repo,github.context.sha)}}
+        run: |
+          cat > message.json <<EOF
+          {
+            "pretext": "$GITHUB_REPOSITORY",
+            "text": "$JOB_STATUS - Wow _wow_ *wow* :party-shanktopus:\n$ACTION_URL",
+            "color":"#FA4",
+          }
+          EOF
+          curl -d@message.json $SLACK_WEBHOOK
