@@ -16,6 +16,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-maven-
+      - uses: 8398a7/action-slack@v2
+        with:
+          status: ${{ job.status }}
+          author_name: github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
       - name: Build
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -39,13 +47,4 @@ jobs:
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
-      - name: Slack Notification
-        - uses: 8398a7/action-slack@v2
-          with:
-            status: ${{ job.status }}
-            author_name: github
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
-        if: always() # Pick up events even if the job fails or is canceled.
 
