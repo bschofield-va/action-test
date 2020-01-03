@@ -39,15 +39,7 @@ jobs:
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           ### git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-     - name: Notify Slack
+      - name: Notify Slack
         env:
           SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
           JOB_STATUS: ${{job.status}}
@@ -60,6 +52,11 @@ jobs:
           }
           EOF
           curl -d@message.json $SLACK_WEBHOOK
-
-
-
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
