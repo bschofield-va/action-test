@@ -5,4 +5,11 @@
   <artifactId>wow</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
+  <distributionManagement>
+   <repository>
+     <id>github</id>
+     <name>GitHub bschofield-va Apache Maven Packages</name>
+     <url>https://maven.pkg.github.com/bschofield-va/actions-test</url>
+   </repository>
+</distributionManagement>
 </project>
