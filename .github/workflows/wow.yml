@@ -9,19 +9,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+            ${{ runner.os }}-maven-
       - name: Build
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          env | sort
-          set -x
-          mvn deploy -s settings.xml
-          docker login docker.pkg.github.com --username ${GITHUB_ACTOR} --password ${GITHUB_TOKEN}
-          echo OLD DATE: $(cat wow.date)
+          # Deploy Maven artifacts to GitHub Packages
+          mvn -B deploy -s settings.xml
           date | tee wow.date
+          # Push Docker images to GitHub Packages
+          docker login docker.pkg.github.com --username ${GITHUB_ACTOR} --password ${GITHUB_TOKEN}
           TAG=docker.pkg.github.com/bschofield-va/action-test/wow:latest
           docker build -t $TAG .
           docker push $TAG
+          # Push changes to GitHub
           git config --local user.email "bryan.schofield@libertyits.com"
           git config --local user.name "Bryan Schofield"
           git add .
@@ -29,5 +36,5 @@ jobs:
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
-          
+
 
