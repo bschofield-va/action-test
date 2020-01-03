@@ -10,10 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           env | sort
           echo OLD DATE: $(cat wow.date)
           date | tee wow.date
+          set -x
           git config --local user.email "bryan.schofield@libertyits.com"
           git config --local user.name "Bryan Schofield"
           git add .
