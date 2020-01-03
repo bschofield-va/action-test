@@ -25,21 +25,29 @@ jobs:
           sed -i "s|<version>.*|<version>1.0.$(date +%s)</version>|" pom.xml
           date | tee wow.date
           # Deploy Maven artifacts to GitHub Packages
-          # mvn -B deploy -s settings.xml -Dmaven.wagon.http.pool=false
+          ### mvn -B deploy -s settings.xml -Dmaven.wagon.http.pool=false
           # Push Docker images to GitHub Packages
           docker login docker.pkg.github.com --username ${GITHUB_ACTOR} --password ${GITHUB_TOKEN}
           TAG=docker.pkg.github.com/bschofield-va/action-test/wow:latest
-          docker build -t $TAG .
-          docker push $TAG
+          ### docker build -t $TAG .
+          ### docker push $TAG
           # Push changes to GitHub
           git config --local user.email "bryan.schofield@libertyits.com"
           git config --local user.name "Bryan Schofield"
-          git add .
-          git commit -m "wow"
+          ### git add .
+          ### git commit -m "wow"
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
-      - name: Notify Slack
+          ### git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+     - name: Notify Slack
         env:
           SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
           JOB_STATUS: ${{job.status}}
