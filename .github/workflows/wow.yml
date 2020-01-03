@@ -16,24 +16,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-maven-
-      - uses: 8398a7/action-slack@v2
-        with:
-          status: ${{ job.status }}
-          author_name: github
-          payload: |
-            {
-              "text": "Wow. message :party-shanktopus:"
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
-        if: always() # Pick up events even if the job fails or is canceled.
+#      - uses: 8398a7/action-slack@v2
+#        with:
+#          status: ${{ job.status }}
+#          author_name: github
+#          payload: |
+#            {
+#              "text": "Wow. message :party-shanktopus:"
+#            }
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
+#        if: always() # Pick up events even if the job fails or is canceled.
 
       - uses: pullreminders/slack-action@master
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
         with:
-          args: '{\"channel\":\"shanktopus\",\"text\":\"Hello world\"}'
+          args: |
+            {
+              "channel":"shanktopus",
+              "text":"Hello world",
+              "icon_emoji":":knife:",
+              "as_user": false,
+              "username": "github"
+            }
       - name: Build
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
