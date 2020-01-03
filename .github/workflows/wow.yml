@@ -16,31 +16,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-maven-
-#      - uses: 8398a7/action-slack@v2
-#        with:
-#          status: ${{ job.status }}
-#          author_name: github
-#          payload: |
-#            {
-#              "text": "Wow. message :party-shanktopus:"
-#            }
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
-#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
-#        if: always() # Pick up events even if the job fails or is canceled.
-
-      - uses: pullreminders/slack-action@master
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
-        with:
-          args: |
-            { \
-              "channel":"shanktopus", \
-              "text":"Hello world", \
-              "icon_emoji":":knife:", \
-              "as_user": false, \
-              "username": "github" \
-            }
       - name: Build
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -64,4 +39,19 @@ jobs:
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
+      - name: Notify Slack
+        env:
+          SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
+          JOB_STATUS: ${{job.status}}
+        run: |
+          cat > message.json <<EOF
+          {
+            "pretext": "$GITHUB_REPOSITORY",
+            "text": "$JOB_STATUS - Wow _wow_ *wow* :party-shanktopus:",
+            "color":"#FA4",
+          }
+          EOF
+          curl -d@message.json $SLACK_WEBHOOK
+
+
 
