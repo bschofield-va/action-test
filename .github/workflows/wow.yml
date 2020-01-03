@@ -42,7 +42,6 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@master
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           SLACK_CHANNEL: skantopus
           SLACK_COLOR: '#3278BD'
           SLACK_ICON: https://ca.slack-edge.com/T0BCXG7GT-U8W0DQ42X-e7c351bc56d2-512
