@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>deleteme.test</groupId>
   <artifactId>wow</artifactId>
-  <version>1.0.1578079922</version>
+  <version>1.0.1578080594</version>
   <packaging>pom</packaging>
   <distributionManagement>
    <repository>
