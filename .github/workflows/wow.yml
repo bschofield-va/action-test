@@ -17,16 +17,8 @@ jobs:
             ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-maven-
       - name: Build
-        uses: rtCamp/action-slack-notify@master
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          SLACK_CHANNEL: skantopus
-          SLACK_COLOR: '#3278BD'
-          SLACK_ICON: https://ca.slack-edge.com/T0BCXG7GT-U8W0DQ42X-e7c351bc56d2-512
-          SLACK_MESSAGE: 'Wow :party-shantopus:'
-          SLACK_TITLE: Wow
-          SLACK_USERNAME: 'Bryan Schofield'
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         run: |
           env | sort
           # Update the pom version and a marker file
@@ -47,5 +39,16 @@ jobs:
           BRANCH=master
           REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "${REMOTE_REPO}" HEAD:${BRANCH} --follow-tags --tags
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          SLACK_CHANNEL: skantopus
+          SLACK_COLOR: '#3278BD'
+          SLACK_ICON: https://ca.slack-edge.com/T0BCXG7GT-U8W0DQ42X-e7c351bc56d2-512
+          SLACK_MESSAGE: 'Wow :party-shantopus:'
+          SLACK_TITLE: Wow
+          SLACK_USERNAME: 'Bryan Schofield'
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
  
 
