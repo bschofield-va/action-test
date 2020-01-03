@@ -11,4 +11,11 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build
         run: |
-          date
+          env
+          echo OLD DATE: $(cat wow.date)
+          date | tee wow.date
+          git config --local user.email "bryan.schofield@libertyits.com"
+          git config --local user.name "Bryan Schofield"
+          echo git add .
+          echo git commit -m "wow"
+
